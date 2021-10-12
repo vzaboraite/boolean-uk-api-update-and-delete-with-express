@@ -39,8 +39,45 @@ function getOneById(req, res) {
     .catch(console.error);
 }
 
+const updateOneById = async (req, res) => {
+  const petToUpdate = {
+    id: req.params.id,
+    ...req.body,
+  };
+
+  const updateByOneSQL = `
+  UPDATE pets 
+  SET name = $1,
+  age = $2,
+  type = $3,
+  breed = $4,
+  microchip = $5
+  WHERE id = $6
+  RETURNING *
+  `;
+  const { name, age, type, breed, microchip, id } = petToUpdate;
+
+  try {
+    const result = await db.query(updateByOneSQL, [
+      name,
+      age,
+      type,
+      breed,
+      microchip,
+      id,
+    ]);
+
+    res.json({ data: result.rows[0] });
+  } catch (error) {
+    console.error({ error: error.message });
+
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   createOne,
   getAll,
   getOneById,
+  updateOneById,
 };
