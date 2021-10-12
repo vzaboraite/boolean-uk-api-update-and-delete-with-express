@@ -68,8 +68,6 @@ const updateOneById = async (req, res) => {
       id,
     ]);
 
-    console.log({ result: result.rows[0] });
-
     res.json({ data: result.rows[0] });
   } catch (error) {
     console.error({ error: error.message });

@@ -17,7 +17,6 @@ router.get("/", getAll);
 
 router.get("/:id", getOneById);
 
-// /books?filterByTitle=lorem-ipsum
 router.put("/", updateOneByTitleWithQuery);
 
 router.put("/byTitle/:title", updateOneByTitle);
