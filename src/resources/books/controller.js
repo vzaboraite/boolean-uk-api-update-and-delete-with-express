@@ -45,19 +45,28 @@ const updateOneById = async (req, res) => {
     ...req.body,
   };
 
-  // UPDATE books SET title='Updated Title' WHERE id=1 RETURNING *
   const updateOneByIdSQL = `
   UPDATE books 
   SET title = $1,
-  author = $2
-  WHERE id = $3 
+  type = $2,
+  author = $3,
+  topic = $4,
+  publicationDate = $5
+  WHERE id = $6
   RETURNING *
   `;
 
-  const { title, author, id } = bookToUpdate;
+  const { title, type, author, topic, publicationdate, id } = bookToUpdate;
 
   try {
-    const result = await db.query(updateOneByIdSQL, [title, author, id]);
+    const result = await db.query(updateOneByIdSQL, [
+      title,
+      type,
+      author,
+      topic,
+      publicationdate,
+      id,
+    ]);
 
     console.log({ result: result.rows[0] });
 
