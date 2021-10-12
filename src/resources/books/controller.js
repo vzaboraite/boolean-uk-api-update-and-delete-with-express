@@ -78,9 +78,48 @@ const updateOneById = async (req, res) => {
   }
 };
 
+const updateOneByTitle = async (req, res) => {
+  const targetTitle = req.params.title;
+
+  const bookToUpdate = {
+    ...req.body,
+  };
+
+  const updateOneByTitleSQL = `
+  UPDATE books
+  SET title = $1,
+  type = $2,
+  author = $3,
+  topic = $4,
+  publicationDate = $5
+  WHERE title = $6
+  RETURNING *
+  `;
+
+  const { title, type, author, topic, publicationdate } = bookToUpdate;
+
+  try {
+    const result = await db.query(updateOneByTitleSQL, [
+      title,
+      type,
+      author,
+      topic,
+      publicationdate,
+      targetTitle,
+    ]);
+
+    res.json({ data: result.rows[0] });
+  } catch (error) {
+    console.error({ error: error.message });
+
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   createOne,
   getAll,
   getOneById,
   updateOneById,
+  updateOneByTitle,
 };
