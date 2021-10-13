@@ -113,10 +113,49 @@ const updateOneByName = async (req, res) => {
   }
 };
 
+const patchUpdateOneById = async (req, res) => {
+  const { id } = req.params;
+  const petToUpdate = {
+    ...req.body,
+  };
+
+  let patchUpdateOneByIdSQL = `UPDATE pets 
+  SET`;
+
+  let sqlParams = [];
+
+  let i = 1;
+  for (const prop in petToUpdate) {
+    patchUpdateOneByIdSQL += ` ${prop} = $${i++},`;
+    sqlParams.push(petToUpdate[prop]);
+  }
+
+  patchUpdateOneByIdSQL = patchUpdateOneByIdSQL.slice(
+    0,
+    patchUpdateOneByIdSQL.length - 1
+  );
+
+  patchUpdateOneByIdSQL += `\nWHERE id = $${i}`;
+  patchUpdateOneByIdSQL += `\nRETURNING *`;
+
+  sqlParams.push(id);
+
+  try {
+    const result = await db.query(patchUpdateOneByIdSQL, sqlParams);
+
+    res.json({ data: result.rows });
+  } catch (error) {
+    console.error({ error: error.message });
+
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   createOne,
   getAll,
   getOneById,
   updateOneById,
   updateOneByName,
+  patchUpdateOneById,
 };
