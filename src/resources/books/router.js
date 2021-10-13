@@ -7,6 +7,7 @@ const {
   updateOneById,
   updateOneByTitle,
   updateOneByTitleWithQuery,
+  patchUpdateOneById,
   deleteOneById,
 } = require("./controller");
 
@@ -23,6 +24,8 @@ router.put("/", updateOneByTitleWithQuery);
 router.put("/byTitle/:title", updateOneByTitle);
 
 router.put("/:id", updateOneById);
+
+router.patch("/:id", patchUpdateOneById);
 
 router.delete("/:id", deleteOneById);
 
