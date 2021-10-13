@@ -154,6 +154,25 @@ const updateOneByTitleWithQuery = async (req, res) => {
   }
 };
 
+const deleteOneById = async (req, res) => {
+  const { id } = req.params;
+
+  const deleteOneByIdSQL = `
+  DELETE FROM books
+  WHERE id = $1
+  `;
+
+  try {
+    const result = await db.query(deleteOneByIdSQL, [id]);
+
+    res.json({ message: `Book with id:${id} deleted successfully!` });
+  } catch (error) {
+    console.error({ error: error.message });
+
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   createOne,
   getAll,
@@ -161,4 +180,5 @@ module.exports = {
   updateOneById,
   updateOneByTitle,
   updateOneByTitleWithQuery,
+  deleteOneById,
 };

@@ -7,6 +7,7 @@ const {
   updateOneById,
   updateOneByTitle,
   updateOneByTitleWithQuery,
+  deleteOneById,
 } = require("./controller");
 
 const router = express.Router();
@@ -22,5 +23,7 @@ router.put("/", updateOneByTitleWithQuery);
 router.put("/byTitle/:title", updateOneByTitle);
 
 router.put("/:id", updateOneById);
+
+router.delete("/:id", deleteOneById);
 
 module.exports = router;
