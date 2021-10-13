@@ -151,6 +151,25 @@ const patchUpdateOneById = async (req, res) => {
   }
 };
 
+const deleteOneById = async (req, res) => {
+  const { id } = req.params;
+
+  const deleteOneByIdSQL = `
+  DELETE FROM pets
+  WHERE id = $1
+  `;
+
+  try {
+    const result = await db.query(deleteOneByIdSQL, [id]);
+
+    res.json({ Message: `Pet with id:${id} has been deleted successfully!` });
+  } catch (error) {
+    console.error({ error: error.message });
+
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   createOne,
   getAll,
@@ -158,4 +177,5 @@ module.exports = {
   updateOneById,
   updateOneByName,
   patchUpdateOneById,
+  deleteOneById,
 };

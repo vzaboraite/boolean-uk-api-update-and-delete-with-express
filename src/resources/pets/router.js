@@ -7,6 +7,7 @@ const {
   updateOneById,
   updateOneByName,
   patchUpdateOneById,
+  deleteOneById,
 } = require("./controller");
 
 const router = express.Router();
@@ -22,5 +23,7 @@ router.put("/byName/:name", updateOneByName);
 router.put("/:id", updateOneById);
 
 router.patch("/:id", patchUpdateOneById);
+
+router.delete("/:id", deleteOneById);
 
 module.exports = router;
